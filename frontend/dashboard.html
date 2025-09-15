@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard • NovaBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="app-shell">
+    <nav class="site-nav">
+      <div class="brand"><div class="brand-badge">NB</div> NovaBank</div>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="transactions.html">Transactions</a>
+      <div class="spacer"></div>
+      <span id="welcome" class="muted" style="font-size:.75rem;"></span>
+      <label class="theme-toggle" title="Toggle theme">
+        <input type="checkbox" id="themeToggle" />
+        <span class="toggle-indicator"></span>
+      </label>
+      <button id="logoutBtn" class="btn ghost" style="font-size:.65rem; padding:.55rem .8rem;">Logout</button>
+    </nav>
+    <main>
+      <div class="cards-grid" style="margin-bottom:2rem;">
+        <div class="card accent" style="grid-column: span 2; min-width:300px;">
+          <div class="meta-text">Current Balance</div>
+            <div class="balance-value" id="balance">--</div>
+            <div class="flex gap-sm" style="flex-wrap:wrap;">
+              <span class="badge" id="lastUpdated" title="Last updated time">—</span>
+            </div>
+        </div>
+        <div class="card">
+          <h3>Deposit Funds</h3>
+          <form id="depositForm" novalidate>
+            <label class="field">
+              <span>Amount</span>
+              <div class="input-wrap"><input type="number" step="0.01" id="depositAmount" placeholder="0.00" required /></div>
+            </label>
+            <button type="submit">Deposit</button>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Withdraw Funds</h3>
+          <form id="withdrawForm" novalidate>
+            <label class="field">
+              <span>Amount</span>
+              <div class="input-wrap"><input type="number" step="0.01" id="withdrawAmount" placeholder="0.00" required /></div>
+            </label>
+            <button type="submit" class="btn danger">Withdraw</button>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Transfer Funds</h3>
+          <form id="transferForm" novalidate>
+            <label class="field">
+              <span>Recipient Username</span>
+              <div class="input-wrap"><input type="text" id="transferTarget" placeholder="username" required /></div>
+            </label>
+            <label class="field">
+              <span>Amount</span>
+              <div class="input-wrap"><input type="number" step="0.01" id="transferAmount" placeholder="0.00" required /></div>
+            </label>
+            <button type="submit" class="btn">Transfer</button>
+          </form>
+        </div>
+        <div class="card" style="grid-column: span 2;">
+          <h3 style="margin-bottom:.35rem;">Recent Activity</h3>
+          <div id="recentEmpty" class="table-empty" style="padding:.75rem 0 .2rem;">No transactions yet.</div>
+          <div id="recentList" class="flex flex-col gap-sm"></div>
+          <div class="text-right mt-md"><a href="transactions.html" class="btn outline" style="font-size:.65rem; padding:.5rem .75rem;">View Full History →</a></div>
+        </div>
+      </div>
+    </main>
+    <footer>© <span id="year"></span> NovaBank • Designed for clarity & security</footer>
+  </div>
+  <script src="ui.js"></script>
+  <script type="module" src="dashboard.js"></script>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In • NovaBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-body">
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="bg-blur">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+  <div class="center-wrap">
+    <div class="card auth-card">
+      <h1 class="page-title">Welcome back</h1>
+      <form id="loginForm" novalidate>
+        <label class="field">
+          <span>Username</span>
+          <div class="input-wrap">
+            <input type="text" id="loginUsername" placeholder="e.g. johndoe" autocomplete="username" required />
+          </div>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <div class="input-wrap">
+            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required />
+          </div>
+        </label>
+        <button type="submit" class="w-full">Sign In</button>
+        <div class="flex gap-sm mt-md" style="justify-content:space-between; align-items:center;">
+          <button type="button" id="forgotBtn" class="btn outline" style="font-size:.65rem; padding:.5rem .7rem;">Forgot Password?</button>
+          <label class="theme-toggle" style="font-size:.65rem;">
+            <input type="checkbox" id="themeToggle" />
+            <span class="toggle-indicator"></span>
+          </label>
+        </div>
+      </form>
+      <div class="auth-alt">Don't have an account? <a href="signup.html">Create one</a></div>
+    </div>
+    <footer>© <span id="year"></span> NovaBank • Secure Banking Interface</footer>
+  </div>
+  <script src="ui.js"></script>
+  <script src="auth.js"></script>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>

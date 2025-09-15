@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transactions • NovaBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="app-shell">
+    <nav class="site-nav">
+      <div class="brand"><div class="brand-badge">NB</div> NovaBank</div>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="transactions.html" class="active">Transactions</a>
+      <div class="spacer"></div>
+      <label class="theme-toggle" title="Toggle theme">
+        <input type="checkbox" id="themeToggle" />
+        <span class="toggle-indicator"></span>
+      </label>
+      <button id="logoutBtn" class="btn ghost" style="font-size:.65rem; padding:.55rem .8rem;">Logout</button>
+    </nav>
+    <main>
+      <div class="flex gap-md" style="align-items: flex-end; flex-wrap:wrap; margin-bottom:1.25rem;">
+        <div class="flex flex-col gap-sm" style="min-width:220px; flex:1;">
+          <label class="field" style="margin:0;">
+            <span>Search</span>
+            <div class="input-wrap"><input type="text" id="searchInput" class="search" placeholder="Search description or type..." /></div>
+          </label>
+        </div>
+        <div class="flex gap-sm" style="flex-wrap:wrap;">
+          <select id="typeFilter" style="background:var(--color-bg-alt); border:1px solid var(--color-border); color:var(--color-text); padding:.65rem .75rem; border-radius: var(--radius-md); font-size:.75rem;">
+            <option value="">All Types</option>
+            <option value="DEPOSIT">Deposit</option>
+            <option value="WITHDRAW">Withdraw</option>
+            <option value="TRANSFER_OUT">Transfer Out</option>
+            <option value="TRANSFER_IN">Transfer In</option>
+          </select>
+          <button id="exportBtn" class="btn outline" style="font-size:.65rem; padding:.55rem .75rem;">Export CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="txTable">
+          <thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Description</th><th>Date</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div id="tableEmpty" class="table-empty hidden">No transactions found.</div>
+      </div>
+    </main>
+    <footer>© <span id="year"></span> NovaBank • Comprehensive history</footer>
+  </div>
+  <script src="ui.js"></script>
+  <script src="transactions.js"></script>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>
