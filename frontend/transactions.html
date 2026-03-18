@@ -45,7 +45,18 @@
       <div class="table-wrap">
         <table id="txTable">
           <thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Description</th><th>Date</th></tr></thead>
-          <tbody></tbody>
+          <tbody>
+            <tr class="skeleton-row">
+              <td colspan="5">
+                <div class="skeleton"><div class="skeleton-line" style="width:78%"></div></div>
+              </td>
+            </tr>
+            <tr class="skeleton-row">
+              <td colspan="5">
+                <div class="skeleton"><div class="skeleton-line" style="width:62%"></div></div>
+              </td>
+            </tr>
+          </tbody>
         </table>
         <div id="tableEmpty" class="table-empty hidden">No transactions found.</div>
       </div>
@@ -54,6 +65,18 @@
   </div>
   <script src="ui.js"></script>
   <script src="transactions.js"></script>
-  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent=new Date().getFullYear();
+    (function(){
+      const role = localStorage.getItem('role');
+      if(role==='ADMIN'){
+        const nav = document.querySelector('nav.site-nav');
+        if(nav && !nav.querySelector('a[href="admin.html"]')){
+          const link = document.createElement('a'); link.href='admin.html'; link.textContent='Admin';
+          nav.insertBefore(link, nav.querySelector('.spacer'));
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

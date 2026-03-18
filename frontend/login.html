@@ -28,13 +28,17 @@
         </label>
         <label class="field">
           <span>Password</span>
-          <div class="input-wrap">
+          <div class="input-wrap" style="display:flex; gap:.5rem; align-items:center;">
             <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required />
+            <button type="button" id="toggleLoginPw" class="btn ghost" style="font-size:.65rem; padding:.4rem .6rem;">Show</button>
           </div>
         </label>
         <button type="submit" class="w-full">Sign In</button>
-        <div class="flex gap-sm mt-md" style="justify-content:space-between; align-items:center;">
-          <button type="button" id="forgotBtn" class="btn outline" style="font-size:.65rem; padding:.5rem .7rem;">Forgot Password?</button>
+        <div class="flex gap-sm mt-md" style="justify-content:space-between; align-items:center; flex-wrap:wrap;">
+          <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
+            <a href="forgot.html" class="btn outline" style="font-size:.65rem; padding:.45rem .6rem;">Get OTP</a>
+            <a href="reset.html" class="btn outline" style="font-size:.65rem; padding:.45rem .6rem;">Reset w/ OTP</a>
+          </div>
           <label class="theme-toggle" style="font-size:.65rem;">
             <input type="checkbox" id="themeToggle" />
             <span class="toggle-indicator"></span>

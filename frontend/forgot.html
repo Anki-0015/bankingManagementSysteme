@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forgot Password • NovaBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-body">
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="center-wrap">
+    <div class="card auth-card">
+      <h1 class="page-title">Reset access</h1>
+      <form id="forgotForm" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <div class="input-wrap"><input type="email" id="forgotEmail" placeholder="you@example.com" required /></div>
+        </label>
+        <button type="submit">Send OTP</button>
+        <div class="auth-alt" style="margin-top:1rem;">Remembered? <a href="login.html">Back to login</a></div>
+      </form>
+    </div>
+  </div>
+  <script src="ui.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    (function(){
+      const form = document.getElementById('forgotForm');
+      form.addEventListener('submit', async e=>{
+        e.preventDefault();
+        const email = forgotEmail.value.trim();
+        if(!email) return NBUI.toast('Enter email',{type:'error'});
+        const btn=form.querySelector('button[type=submit]'); const prev=btn.textContent; btn.disabled=true; btn.textContent='Sending...';
+        try { await BankAuth.api('/auth/forgot-password','POST',{email}); NBUI.toast('If the email exists, an OTP was sent',{type:'success'}); setTimeout(()=>location='reset.html',1200); }
+        catch(err){ NBUI.toast(err.message||'Failed',{type:'error'}); }
+        finally { btn.disabled=false; btn.textContent=prev; }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -18,6 +18,8 @@ const exportBtn = document.getElementById('exportBtn');
 let allTx = [];
 
 function render(list){
+  // Remove any skeleton rows
+  tbody.querySelectorAll('.skeleton-row').forEach(r=> r.remove());
   if(!list.length){ tbody.innerHTML=''; tableEmpty?.classList.remove('hidden'); return; }
   tableEmpty?.classList.add('hidden');
   tbody.innerHTML = list.map(t=>{

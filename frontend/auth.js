@@ -1,7 +1,7 @@
 const API_BASE = 'http://localhost:8080/api';
 function saveToken(t){ localStorage.setItem('token', t); }
 function getToken(){ return localStorage.getItem('token'); }
-function logout(){ localStorage.removeItem('token'); localStorage.removeItem('username'); localStorage.removeItem('balance'); window.location='login.html'; }
+function logout(){ localStorage.removeItem('token'); localStorage.removeItem('username'); localStorage.removeItem('balance'); localStorage.removeItem('role'); window.location='login.html'; }
 async function api(path, method='GET', body){
   const headers = {'Content-Type':'application/json'}; const token = getToken(); if(token) headers['Authorization']='Bearer '+token;
   let res;
@@ -24,9 +24,10 @@ if(loginForm){
       const usernameVal = loginUsername.value.trim(); const passVal = loginPassword.value;
       if(!usernameVal || !passVal){ throw new Error('Please fill all fields'); }
       const data = await api('/auth/login','POST',{username:usernameVal,password:passVal});
-      saveToken(data.token); localStorage.setItem('username', data.username); localStorage.setItem('balance', data.balance);
-      NBUI.toast('Login successful. Redirecting...', {type:'success', timeout:1500});
-      setTimeout(()=> window.location='dashboard.html', 900);
+  saveToken(data.token); localStorage.setItem('username', data.username); localStorage.setItem('balance', data.balance); if(data.role) localStorage.setItem('role', data.role);
+  NBUI.toast('Login successful. Redirecting...', {type:'success', timeout:1200});
+  const dest = (data.role === 'ADMIN') ? 'admin.html' : 'dashboard.html';
+  setTimeout(()=> window.location=dest, 600);
     }catch(err){ NBUI.toast(err.message || 'Login failed', {type:'error'}); }
     finally { btn.disabled=false; btn.textContent='Sign In'; }
   });
@@ -42,9 +43,10 @@ if(signupForm){
       const u = signupUsername.value.trim(); const em = signupEmail.value.trim(); const pw = signupPassword.value;
       if(pw.length<8) throw new Error('Password must be at least 8 characters');
       const data = await api('/auth/signup','POST',{username:u,email:em,password:pw});
-      saveToken(data.token); localStorage.setItem('username', data.username); localStorage.setItem('balance', data.balance);
-      NBUI.toast('Account created. Redirecting...', {type:'success', timeout:1600});
-      setTimeout(()=> window.location='dashboard.html', 900);
+  saveToken(data.token); localStorage.setItem('username', data.username); localStorage.setItem('balance', data.balance); if(data.role) localStorage.setItem('role', data.role);
+  NBUI.toast('Account created. Redirecting...', {type:'success', timeout:1600});
+  const dest = (data.role === 'ADMIN') ? 'admin.html' : 'dashboard.html';
+  setTimeout(()=> window.location=dest, 700);
     }catch(err){ NBUI.toast(err.message || 'Signup failed', {type:'error'}); }
     finally { btn.disabled=false; btn.textContent='Create Account'; }
   });
@@ -65,3 +67,17 @@ if(forgotBtn){
 const logoutBtn = document.getElementById('logoutBtn'); if(logoutBtn){ logoutBtn.addEventListener('click', ()=>{ logout(); }); }
 
 window.BankAuth = { api, logout, getToken };
+
+// Reusable password visibility toggles (login & signup)
+['toggleLoginPw','toggleSignupPw'].forEach(id => {
+  const btn = document.getElementById(id);
+  if(!btn) return;
+  const inputId = id === 'toggleLoginPw' ? 'loginPassword' : 'signupPassword';
+  const field = document.getElementById(inputId);
+  if(!field) return;
+  btn.addEventListener('click', () => {
+    const isPwd = field.type === 'password';
+    field.type = isPwd ? 'text' : 'password';
+    btn.textContent = isPwd ? 'Hide' : 'Show';
+  });
+});

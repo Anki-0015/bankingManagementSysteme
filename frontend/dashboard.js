@@ -17,16 +17,23 @@ const balanceDiv = document.getElementById('balance'); const lastUpdated = docum
 function setBalance(b){ balanceDiv.textContent = money? money(b): b; localStorage.setItem('balance', b); if(lastUpdated) lastUpdated.textContent = 'Updated '+ new Date().toLocaleTimeString(); }
 setBalance(localStorage.getItem('balance')||'0');
 
+async function refreshBalance(){
+  try { const b = await api('/account/balance'); setBalance(b); } catch(e){ /* ignore */ }
+}
 async function loadRecent(){
+  const skel = document.getElementById('recentSkeleton');
+  if(skel) skel.style.display='block';
   try {
     const tx = await api('/account/transactions');
     if(tx && tx.length){
-      // assume most recent first from backend; if not, sort by createdAt desc
       const sorted = tx.slice().sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
-      setBalance(sorted[0].balance);
       if(renderRecentTx) renderRecentTx(sorted);
     }
   } catch(e){ /* silent */ }
+  finally {
+    if(skel) skel.style.display='none';
+    refreshBalance();
+  }
 }
 loadRecent();
 
@@ -41,7 +48,7 @@ function handleSubmit(form, buildPayload, endpoint, successMsg){
       setBalance(newBal);
       toast && toast(successMsg, {type:'success', timeout:2500});
       form.reset();
-      loadRecent();
+      loadRecent(); // will also refresh balance
     } catch(err){ toast && toast(err.message || 'Operation failed', {type:'error'}); }
     finally { const btn2 = form.querySelector('button[type=submit]'); if(btn2){ btn2.disabled=false; btn2.textContent=btn2.dataset.prev||'Submit'; } }
   });

@@ -34,14 +34,19 @@
         </label>
         <label class="field">
           <span>Password</span>
-          <div class="input-wrap">
+          <div class="input-wrap" style="display:flex; gap:.5rem; align-items:center;">
             <input type="password" id="signupPassword" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required />
+            <button type="button" id="toggleSignupPw" class="btn ghost" style="font-size:.65rem; padding:.4rem .6rem;">Show</button>
           </div>
           <div class="field-hint">Use 8+ chars with letters & numbers</div>
         </label>
         <button type="submit">Create Account</button>
-        <div class="flex gap-sm mt-md" style="justify-content:space-between; align-items:center;">
-          <a href="login.html" class="btn outline" style="font-size:.65rem; padding:.5rem .7rem;">Back to login</a>
+        <div class="flex gap-sm mt-md" style="justify-content:space-between; align-items:center; flex-wrap:wrap;">
+          <div style="display:flex; gap:.45rem; flex-wrap:wrap;">
+            <a href="login.html" class="btn outline" style="font-size:.65rem; padding:.45rem .6rem;">Back to login</a>
+            <a href="forgot.html" class="btn outline" style="font-size:.65rem; padding:.45rem .6rem;">Get OTP</a>
+            <a href="reset.html" class="btn outline" style="font-size:.65rem; padding:.45rem .6rem;">Reset w/ OTP</a>
+          </div>
           <label class="theme-toggle" style="font-size:.65rem;">
             <input type="checkbox" id="themeToggle" />
             <span class="toggle-indicator"></span>

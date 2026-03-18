@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reset Password • NovaBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-body">
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="center-wrap">
+    <div class="card auth-card">
+      <h1 class="page-title">Set new password</h1>
+      <form id="resetForm" novalidate>
+        <label class="field">
+          <span>OTP Code</span>
+          <div class="input-wrap"><input type="text" id="resetToken" placeholder="6-digit code" minlength="6" maxlength="6" required /></div>
+          <div class="field-hint" style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
+            Enter the OTP sent to your email.
+            <button type="button" class="btn outline" id="resendBtn" style="font-size:.55rem; padding:.35rem .5rem;">Resend</button>
+          </div>
+        </label>
+        <label class="field">
+          <span>New Password</span>
+          <div class="input-wrap" style="display:flex; gap:.5rem; align-items:center;">
+            <input type="password" id="newPassword" placeholder="At least 8 characters" minlength="8" required />
+            <button type="button" id="toggleNewPw" class="btn ghost" style="font-size:.65rem; padding:.4rem .6rem;">Show</button>
+          </div>
+        </label>
+        <button type="submit" class="w-full">Reset Password</button>
+        <div class="auth-alt" style="margin-top:1rem;"><a href="login.html">Back to login</a></div>
+      </form>
+    </div>
+  </div>
+  <script src="ui.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    (function(){
+      const toggleBtn = document.getElementById('toggleNewPw'); const pw = document.getElementById('newPassword');
+      toggleBtn.addEventListener('click', ()=>{ const isPwd = pw.type==='password'; pw.type = isPwd? 'text':'password'; toggleBtn.textContent = isPwd? 'Hide':'Show'; });
+      const form = document.getElementById('resetForm');
+      async function api(path, method='GET', body){
+        const headers={'Content-Type':'application/json'}; let res;
+        try{ res = await fetch('http://localhost:8080/api'+path,{method,headers,body: body?JSON.stringify(body):undefined}); }
+        catch(e){ throw new Error('Network error'); }
+        if(res.status===204) return null; const txt=await res.text(); let json; try{ json=txt?JSON.parse(txt):null;}catch{json=null;}
+        if(!res.ok) throw new Error(json?.message||json?.error||'Request failed'); return json;
+      }
+      form.addEventListener('submit', async e=>{
+        e.preventDefault();
+        const token = resetToken.value.trim(); const newPwd = newPassword.value;
+        if(token.length!==6) return NBUI.toast('OTP must be 6 digits',{type:'error'});
+        if(newPwd.length<8) return NBUI.toast('Password too short',{type:'error'});
+        const btn = form.querySelector('button[type=submit]'); const prev=btn.textContent; btn.disabled=true; btn.textContent='Resetting...';
+        try {
+          await api('/auth/reset-password','POST',{token, newPassword:newPwd});
+          NBUI.toast('Password reset. Redirecting to login...',{type:'success'});
+          setTimeout(()=> location='login.html', 1400);
+        } catch(err){ NBUI.toast(err.message||'Reset failed',{type:'error'}); }
+        finally { btn.disabled=false; btn.textContent=prev; }
+      });
+      const resend = document.getElementById('resendBtn');
+      resend.addEventListener('click', async ()=>{
+        const email = prompt('Enter your email to resend OTP'); if(!email) return;
+        try { await api('/auth/forgot-password','POST',{email}); NBUI.toast('If email exists, new OTP sent',{type:'success'}); }
+        catch(err){ NBUI.toast(err.message||'Failed to resend',{type:'error'}); }
+      });
+    })();
+  </script>
+</body>
+</html>

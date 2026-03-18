@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • NovaBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="app-shell">
+    <nav class="site-nav">
+      <div class="brand"><div class="brand-badge">NB</div> NovaBank</div>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="admin.html" class="active">Admin</a>
+      <div class="spacer"></div>
+      <label class="theme-toggle" title="Toggle theme"><input type="checkbox" id="themeToggle" /><span class="toggle-indicator"></span></label>
+      <button id="logoutBtn" class="btn ghost" style="font-size:.65rem; padding:.55rem .8rem;">Logout</button>
+    </nav>
+    <main>
+      <h1 class="page-title" style="margin-top:0;">User Management</h1>
+      <div class="cards-grid" style="margin-bottom:2rem; grid-template-columns:1fr 340px;">
+        <div class="card" style="grid-column:1 / span 1;">
+          <h3 style="margin-top:0;">All Users</h3>
+          <div class="table-wrap" style="margin-top:1rem;">
+            <table id="usersTable">
+              <thead>
+                <tr><th>ID</th><th>Username</th><th>Email</th><th>Balance</th><th>Role</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr class="skeleton-row"><td colspan="6"><div class="skeleton"><div class="skeleton-line" style="width:70%"></div></div></td></tr>
+                <tr class="skeleton-row"><td colspan="6"><div class="skeleton"><div class="skeleton-line" style="width:55%"></div></div></td></tr>
+              </tbody>
+            </table>
+            <div id="usersEmpty" class="table-empty hidden">No users found.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">Create User</h3>
+          <form id="createUserForm" novalidate>
+            <label class="field"><span>Username</span><div class="input-wrap"><input id="newUsername" required /></div></label>
+            <label class="field"><span>Email</span><div class="input-wrap"><input type="email" id="newEmail" required /></div></label>
+            <label class="field"><span>Password</span><div class="input-wrap"><input type="password" id="newPassword" required minlength="4" /></div></label>
+            <label class="field"><span>Role</span>
+              <div class="input-wrap">
+                <select id="newRole" style="width:100%; background:var(--color-bg-alt); border:1px solid var(--color-border); color:var(--color-text); padding:.55rem .6rem; border-radius: var(--radius-md);">
+                  <option value="USER">USER</option>
+                  <option value="ADMIN">ADMIN</option>
+                </select>
+              </div>
+            </label>
+            <button type="submit">Create</button>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer>© <span id="year"></span> NovaBank • Administration Panel</footer>
+  </div>
+  <script src="ui.js"></script>
+  <script type="module" src="admin.js"></script>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>
